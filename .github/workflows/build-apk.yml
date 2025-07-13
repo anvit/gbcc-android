@@ -24,7 +24,7 @@ jobs:
           auth_header="$(git config --local --get http.https://github.com/.extraheader)"
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
-      
+
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -39,8 +39,11 @@ jobs:
       - name: Build app
         run: ./gradlew build
 
-      - name: Upload debug apk
+      - name: List build folder
+        run: ls app/build/outputs/apk/
+
+      - name: Upload build folder
         uses: actions/upload-artifact@v4
         with:
           name: gbcc
-          path: app/build/outputs/apk/debug/gbcc-universal-debug.apk
+          path: app/build/outputs/apk/
